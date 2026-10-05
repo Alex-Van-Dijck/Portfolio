@@ -1,6 +1,6 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, OrbitControls } from "@react-three/drei";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
@@ -132,8 +132,48 @@ function CodeBrackets({ material }: { material: THREE.Material }) {
   );
 }
 
+// Tilts its children toward the cursor, easing back to center when idle.
+function TiltGroup({ children }: { children: React.ReactNode }) {
+  const group = useRef<THREE.Group>(null);
+
+  useFrame((state, delta) => {
+    if (!group.current) return;
+    const targetY = state.pointer.x * 0.18;
+    const targetX = -state.pointer.y * 0.14;
+    group.current.rotation.y = THREE.MathUtils.damp(
+      group.current.rotation.y,
+      targetY,
+      4,
+      delta,
+    );
+    group.current.rotation.x = THREE.MathUtils.damp(
+      group.current.rotation.x,
+      targetX,
+      4,
+      delta,
+    );
+  });
+
+  return <group ref={group}>{children}</group>;
+}
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  return isDesktop;
+}
+
 const Hero3D = ({ isDark }: Hero3DProps) => {
   const roomEnvironment = useMemo(() => new RoomEnvironment(), []);
+  const isDesktop = useIsDesktop();
 
   const material = useMemo(
     () =>
@@ -164,34 +204,31 @@ const Hero3D = ({ isDark }: Hero3DProps) => {
         <primitive object={roomEnvironment} />
       </Environment>
 
-      <ambientLight intensity={0.9} />
+      <ambientLight intensity={0.35} />
       <pointLight
         position={[4, 4, 4]}
-        intensity={3.5}
+        intensity={4.5}
         distance={18}
         color={isDark ? "#5eddb8" : "#00c891"}
       />
       <pointLight
         position={[-4, -2, 3]}
-        intensity={2.0}
+        intensity={1.0}
         distance={18}
         color="#ffffff"
       />
       <pointLight
-        position={[0, -4, -2]}
-        intensity={1.0}
+        position={[0, -3, -3.5]}
+        intensity={2.2}
         distance={14}
         color="#4455ff"
       />
 
-      <CodeBrackets material={material} />
-
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        minPolarAngle={Math.PI / 2}
-        maxPolarAngle={Math.PI / 2}
-      />
+      <group position={[0, 0, 0]}>
+        <TiltGroup>
+          <CodeBrackets material={material} />
+        </TiltGroup>
+      </group>
     </Canvas>
   );
 };
