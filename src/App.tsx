@@ -5,6 +5,8 @@ import Hero from "./components/Hero";
 import Nav from "./components/Nav";
 import About from "./components/About";
 import { Experience } from "./components/Experience";
+import Certificates from "./components/Certificates";
+import Contact from "./components/Contact";
 
 function App() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
@@ -22,8 +24,8 @@ function App() {
         <Hero isDark={theme === "dark"} />
         <About />
         <Experience />
-        {/* <Certificates />s
-        <Contact /> */}
+        <Certificates />
+        <Contact />
       </main>
     </div>
   );

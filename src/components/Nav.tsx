@@ -3,7 +3,7 @@ import { Sun, Moon } from "lucide-react";
 const LINKS = [
   { href: "#about", label: "About" },
   { href: "#experience", label: "Experience" },
-  { href: "#works", label: "Works" },
+  { href: "#certificates", label: "Certificates" },
   { href: "#contact", label: "Contact" },
 ];
 
