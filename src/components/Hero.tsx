@@ -38,7 +38,7 @@ const Hero = ({ isDark }: HeroProps) => {
           </h1>
 
           <p className="font-mono text-sm text-muted-fg tracking-wide">
-            Full-stack consultant · Wuustwezel
+            Full-stack engineer · Wuustwezel
             <span className="cursor-blink ml-0.5 text-accent" aria-hidden>
               ▮
             </span>
