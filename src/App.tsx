@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import "./App.css";
 import Hero from "./components/Hero";
+import Nav from "./components/Nav";
 
 function App() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
@@ -14,7 +15,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background text-foreground transition-colors duration-500">
-      {/* <Nav theme={theme} onToggleTheme={toggleTheme} /> */}
+      <Nav theme={theme} onToggleTheme={toggleTheme} />
       <main>
         <Hero isDark={theme === "dark"} />
         {/* <About />

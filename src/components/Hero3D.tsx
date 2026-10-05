@@ -178,7 +178,7 @@ const Hero3D = ({ isDark }: Hero3DProps) => {
   const material = useMemo(
     () =>
       new THREE.MeshPhysicalMaterial({
-        color: new THREE.Color(isDark ? "#5EDDB8" : "#00A37A"),
+        color: new THREE.Color(isDark ? "#5EDDB8" : "#01926e"),
         roughness: 0.06,
         metalness: 0.12,
         clearcoat: 1.0,
@@ -203,6 +203,7 @@ const Hero3D = ({ isDark }: Hero3DProps) => {
       <Environment background={false}>
         <primitive object={roomEnvironment} />
       </Environment>
+      <hemisphereLight intensity={isDark ? 1.5 : 0.5} groundColor={"white"} />
 
       <ambientLight intensity={0.35} />
       <pointLight
