@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Hero from "./components/Hero";
 import Nav from "./components/Nav";
+import About from "./components/About";
+import { Experience } from "./components/Experience";
 
 function App() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
@@ -18,10 +20,9 @@ function App() {
       <Nav theme={theme} onToggleTheme={toggleTheme} />
       <main>
         <Hero isDark={theme === "dark"} />
-        {/* <About />
+        <About />
         <Experience />
-        <Works />
-        <Certificates />
+        {/* <Certificates />s
         <Contact /> */}
       </main>
     </div>

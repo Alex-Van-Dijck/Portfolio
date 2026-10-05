@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 interface Hero3DProps {
@@ -157,23 +157,8 @@ function TiltGroup({ children }: { children: React.ReactNode }) {
   return <group ref={group}>{children}</group>;
 }
 
-function useIsDesktop() {
-  const [isDesktop, setIsDesktop] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(min-width: 1024px)");
-    const update = () => setIsDesktop(query.matches);
-    update();
-    query.addEventListener("change", update);
-    return () => query.removeEventListener("change", update);
-  }, []);
-
-  return isDesktop;
-}
-
 const Hero3D = ({ isDark }: Hero3DProps) => {
   const roomEnvironment = useMemo(() => new RoomEnvironment(), []);
-  const isDesktop = useIsDesktop();
 
   const material = useMemo(
     () =>
