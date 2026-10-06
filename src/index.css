@@ -87,6 +87,14 @@ body {
   animation: blink 1.1s step-end infinite;
 }
 
+/* ── Certificate logo recolor ────────────────────────────── */
+.cert-logo-recolor {
+  filter: invert(1);
+}
+.light .cert-logo-recolor {
+  filter: none;
+}
+
 /* ── Scroll reveal ───────────────────────────────────────── */
 @keyframes reveal-up {
   from {
