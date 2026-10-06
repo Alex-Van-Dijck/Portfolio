@@ -88,7 +88,7 @@ const Contact = () => {
           <p className="font-mono text-xs text-muted-fg leading-relaxed">
             Based in Wuustwezel, Belgium.
             <br />
-            Open to remote and on-site engagements.
+            Open to hybrid and on-site engagements.
           </p>
         </div>
 
