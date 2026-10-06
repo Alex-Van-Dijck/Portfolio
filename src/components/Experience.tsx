@@ -1,11 +1,21 @@
 import { useState } from "react";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 
-const JOBS = [
+interface Job {
+  company: string;
+  role: string;
+  startDate: Date;
+  endDate?: Date;
+  description: string;
+  bullets: string[];
+  websiteUrl: string;
+}
+
+const JOBS: Job[] = [
   {
     company: "[Axxes]",
     role: "[Front-end consultant]",
-    period: "[05/2026 – Present]",
+    startDate: new Date("may, 2026"),
     description:
       "[Axxes is a full-service IT consultancy company that supports businesses with digital transformations, software development, and IT staffing solutions.]",
     bullets: [
@@ -13,11 +23,13 @@ const JOBS = [
       "[Deepened my frontend expertise by learning advanced React and exploring Angular.]",
       "[Broadened my profile by attending the software traineeship, which covered architecture, AI development, cloud computing and Java development.]",
     ],
+    websiteUrl: "https://www.axxes.com/",
   },
   {
     company: "[Bloomup]",
     role: "[Full-Stack Engineer]",
-    period: "[09/2023 – 05/2026]",
+    startDate: new Date("september, 2023"),
+    endDate: new Date("may, 2026"),
     description:
       "[BloomUp is an Antwerp-based startup offering online mental health support. I worked full-stack in a two-person engineering team reporting directly to the founder, owning everything from frontend development to GraphQL API design, infrastructure, and security remediation. My most notable project was integrating an acquired e-learning platform: merging its React frontend and auth into our stack, and migrating its MySQL data and infrastructure onto our AWS/PostgreSQL setup.]",
     bullets: [
@@ -27,6 +39,7 @@ const JOBS = [
       "[Reworked the video conferencing implementation]",
       "[Co-designed UX and fully implemented a new homescreen for the React Native mobile application.]",
     ],
+    websiteUrl: "https://www.bloomup.org",
   },
 ];
 
@@ -61,7 +74,7 @@ export function Experience() {
                     {job.role}
                   </span>
                   <span className="font-mono text-xs text-muted-fg md:text-right">
-                    {job.period}
+                    {`${job.startDate.getMonth() + 1}/${job.startDate.getFullYear()} - ${job.endDate ? job.endDate?.getMonth() + 1 + "/" + job.endDate.getFullYear() : "present"}`}
                   </span>
                 </button>
 
