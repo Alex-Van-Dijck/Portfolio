@@ -68,7 +68,9 @@ export function Experience() {
                   aria-expanded={open}
                 >
                   <span className="font-display font-semibold text-lg md:text-xl text-foreground group-hover:text-accent transition-colors">
-                    {job.company}
+                    <a href={job.websiteUrl} target="_blank">
+                      {job.company}
+                    </a>
                   </span>
                   <span className="font-sans text-sm text-muted-fg">
                     {job.role}

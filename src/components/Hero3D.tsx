@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { useResponsiveCamera } from "../hooks/useResponsiveCamera";
 
 interface Hero3DProps {
   isDark: boolean;
@@ -159,6 +160,7 @@ function TiltGroup({ children }: { children: React.ReactNode }) {
 
 const Hero3D = ({ isDark }: Hero3DProps) => {
   const roomEnvironment = useMemo(() => new RoomEnvironment(), []);
+  const { position: cameraPosition, fov, scale } = useResponsiveCamera();
 
   const material = useMemo(
     () =>
@@ -179,7 +181,7 @@ const Hero3D = ({ isDark }: Hero3DProps) => {
       className="w-full h-full"
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0, 0, 7.5], fov: 42, near: 0.1, far: 100 }}
+      camera={{ position: cameraPosition, fov, near: 0.1, far: 100 }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.1;
@@ -210,7 +212,7 @@ const Hero3D = ({ isDark }: Hero3DProps) => {
         color="#4455ff"
       />
 
-      <group position={[0, 0, 0]}>
+      <group position={[0, 0, 0]} scale={scale}>
         <TiltGroup>
           <CodeBrackets material={material} />
         </TiltGroup>
