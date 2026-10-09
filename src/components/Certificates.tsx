@@ -11,25 +11,25 @@ const CERTS: Certificate[] = [
   {
     id: "react",
     name: "Certified Senior React Developer",
-    logo: "/certificate-logos/react.svg",
+    logo: "./certificate-logos/react.svg",
     href: "https://certificates.dev/c/a2355458-45d4-44f0-8dcd-864a4e414681",
   },
   {
     id: "angular",
     name: "Certified Mid-Level Angular Developer",
-    logo: "/certificate-logos/angular.svg",
+    logo: "./certificate-logos/angular.svg",
     href: "https://certificates.dev/angular/certificates/a2e00be0-7359-4f7f-b717-ae70f0afc6dc",
   },
   {
     id: "apollo",
     name: "Graph Developer - Associate",
-    logo: "/certificate-logos/apollo.svg",
+    logo: "./certificate-logos/apollo.svg",
     href: "https://www.apollographql.com/tutorials/certifications/6c9264c1-e082-4a63-98d1-f22b69e16b75",
   },
   {
     id: "anthropic",
     name: "Building with the Claude API",
-    logo: "/certificate-logos/anthropic.svg",
+    logo: "./certificate-logos/anthropic.svg",
     href: "https://verify.skilljar.com/c/sta3idurtyzg",
   },
 ];
