@@ -35,7 +35,7 @@ const About = () => {
             [I'm a full-stack engineer who leans into React and frontend craft,
             with solid experience building REST and GraphQL APIs in Node.js. I
             thrive working closely with business, owning my work end-to-end, and
-            sweating the UX details that make an interface feel great. ]
+            sweating the UX details that make an interface feel great to use.]
           </p>
 
           <div ref={tagsRef} className={tagsClassName}>
