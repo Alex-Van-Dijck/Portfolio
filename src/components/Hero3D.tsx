@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
+import { Environment, PerspectiveCamera } from "@react-three/drei";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { useResponsiveCamera } from "../hooks/useResponsiveCamera";
 
@@ -181,12 +181,18 @@ const Hero3D = ({ isDark }: Hero3DProps) => {
       className="w-full h-full"
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
-      camera={{ position: cameraPosition, fov, near: 0.1, far: 100 }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.1;
       }}
     >
+      <PerspectiveCamera
+        makeDefault
+        position={cameraPosition}
+        fov={fov}
+        near={0.1}
+        far={100}
+      />
       <Environment background={false}>
         <primitive object={roomEnvironment} />
       </Environment>

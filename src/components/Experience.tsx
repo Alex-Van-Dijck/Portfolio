@@ -15,7 +15,7 @@ const JOBS: Job[] = [
   {
     company: "[Axxes]",
     role: "[Front-end consultant]",
-    startDate: new Date("may, 2026"),
+    startDate: new Date(2026, 5),
     description:
       "[Axxes is a full-service IT consultancy company that supports businesses with digital transformations, software development, and IT staffing solutions.]",
     bullets: [
@@ -28,8 +28,8 @@ const JOBS: Job[] = [
   {
     company: "[Bloomup]",
     role: "[Full-Stack Engineer]",
-    startDate: new Date("september, 2023"),
-    endDate: new Date("may, 2026"),
+    startDate: new Date(2023, 9),
+    endDate: new Date(2026, 5),
     description:
       "[BloomUp is an Antwerp-based startup offering online mental health support. I worked full-stack in a two-person engineering team reporting directly to the founder, owning everything from frontend development to GraphQL API design, infrastructure, and security remediation. My most notable project was integrating an acquired e-learning platform: merging its React frontend and auth into our stack, and migrating its MySQL data and infrastructure onto our AWS/PostgreSQL setup.]",
     bullets: [
@@ -66,43 +66,54 @@ export function Experience() {
                   className="w-full text-left py-6 md:py-7 grid grid-cols-1 md:grid-cols-[2fr_2fr_auto] gap-1.5 md:gap-8 items-baseline group hover:text-accent transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent"
                   onClick={() => setExpanded(open ? null : i)}
                   aria-expanded={open}
+                  aria-controls={`job-panel-${i}`}
                 >
                   <span className="font-display font-semibold text-lg md:text-xl text-foreground group-hover:text-accent transition-colors">
-                    <a href={job.websiteUrl} target="_blank">
-                      {job.company}
-                    </a>
+                    {job.company}
                   </span>
                   <span className="font-sans text-sm text-muted-fg">
                     {job.role}
                   </span>
                   <span className="font-mono text-xs text-muted-fg md:text-right">
-                    {`${job.startDate.getMonth() + 1}/${job.startDate.getFullYear()} - ${job.endDate ? job.endDate?.getMonth() + 1 + "/" + job.endDate.getFullYear() : "present"}`}
+                    {`${job.startDate.getMonth()}/${job.startDate.getFullYear()} - ${job.endDate ? job.endDate?.getMonth() + "/" + job.endDate.getFullYear() : "present"}`}
                   </span>
                 </button>
 
                 <div
-                  className="overflow-hidden transition-all duration-300"
+                  id={`job-panel-${i}`}
+                  inert={!open}
+                  className="grid transition-[grid-template-rows,opacity] duration-300"
                   style={{
-                    maxHeight: open ? "480px" : "0",
+                    gridTemplateRows: open ? "1fr" : "0fr",
                     opacity: open ? 1 : 0,
                   }}
                 >
-                  <div className="pb-8 space-y-4">
-                    <p className="font-sans text-sm text-foreground leading-relaxed">
-                      {job.description}
-                    </p>
-                    <div className="space-y-3">
-                      {job.bullets.map((b, j) => (
-                        <p
-                          key={j}
-                          className="font-sans text-sm text-muted-fg flex gap-3 leading-relaxed"
-                        >
-                          <span className="text-accent shrink-0 select-none mt-px">
-                            —
-                          </span>
-                          {b}
-                        </p>
-                      ))}
+                  <div className="overflow-hidden min-h-0">
+                    <div className="pb-8 space-y-4">
+                      <p className="font-sans text-sm text-foreground leading-relaxed">
+                        {job.description}
+                      </p>
+                      <div className="space-y-3">
+                        {job.bullets.map((b, j) => (
+                          <p
+                            key={j}
+                            className="font-sans text-sm text-muted-fg flex gap-3 leading-relaxed"
+                          >
+                            <span className="text-accent shrink-0 select-none mt-px">
+                              —
+                            </span>
+                            {b}
+                          </p>
+                        ))}
+                      </div>
+                      <a
+                        href={job.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block font-mono text-xs text-muted-fg hover:text-accent underline underline-offset-4 transition-colors"
+                      >
+                        Visit {job.company} ↗
+                      </a>
                     </div>
                   </div>
                 </div>

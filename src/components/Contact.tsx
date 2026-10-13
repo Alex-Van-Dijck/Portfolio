@@ -72,7 +72,7 @@ const Contact = () => {
               [v.dijckalex@gmail.com] ↗
             </a>
             <a
-              href="www.linkedin.com/in/alex-van-dijck-442375231"
+              href="https://www.linkedin.com/in/alex-van-dijck-442375231"
               className="block font-mono text-sm text-muted-fg hover:text-accent underline underline-offset-4 transition-colors"
             >
               LinkedIn ↗
