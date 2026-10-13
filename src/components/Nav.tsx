@@ -1,5 +1,6 @@
 import { Sun, Moon, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useActiveSection } from "../hooks/useActiveSection";
 
 const LINKS = [
   { href: "#about", label: "About" },
@@ -7,6 +8,8 @@ const LINKS = [
   { href: "#certificates", label: "Certificates" },
   { href: "#contact", label: "Contact" },
 ];
+
+const SECTION_IDS = LINKS.map(({ href }) => href.slice(1));
 
 interface Props {
   theme: "dark" | "light";
@@ -17,6 +20,7 @@ const Nav = ({ theme, onToggleTheme }: Props) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pillRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const { activeId, goTo } = useActiveSection(SECTION_IDS, "hero");
 
   useEffect(() => {
     if (!mobileMenuOpen) return;
@@ -49,16 +53,25 @@ const Nav = ({ theme, onToggleTheme }: Props) => {
         ref={pillRef}
         className="pointer-events-auto flex items-center gap-0.5 px-2 py-1.5 rounded-full bg-surface/90 border border-border backdrop-blur-md shadow-sm md:rounded-full"
       >
-        <span className="font-mono text-xs text-accent font-medium px-3 py-1 select-none">
+        <a
+          href="#hero"
+          onClick={() => goTo("hero")}
+          aria-label="Back to top"
+          className="font-mono text-xs text-accent font-medium px-3 py-1 rounded-full select-none focus-visible:outline-2 focus-visible:outline focus-visible:outline-accent"
+        >
           AVD
-        </span>
+        </a>
 
         <div className="hidden md:flex items-center gap-0.5">
           {LINKS.map(({ href, label }) => (
             <a
               key={href}
               href={href}
-              className="px-3 py-1.5 text-xs font-mono text-muted-fg hover:text-foreground rounded-full transition-colors focus-visible:outline-2 focus-visible:outline focus-visible:outline-accent"
+              onClick={() => goTo(href.slice(1))}
+              aria-current={activeId === href.slice(1) ? "location" : undefined}
+              className={`px-3 py-1.5 text-xs font-mono hover:text-foreground rounded-full transition-colors focus-visible:outline-2 focus-visible:outline focus-visible:outline-accent ${
+                activeId === href.slice(1) ? "text-foreground" : "text-muted-fg"
+              }`}
             >
               {label}
             </a>
@@ -90,8 +103,18 @@ const Nav = ({ theme, onToggleTheme }: Props) => {
                 <a
                   key={href}
                   href={href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-2 text-sm font-mono text-muted-fg hover:text-foreground hover:bg-border rounded transition-colors focus-visible:outline-2 focus-visible:outline focus-visible:outline-accent"
+                  onClick={() => {
+                    goTo(href.slice(1));
+                    setMobileMenuOpen(false);
+                  }}
+                  aria-current={
+                    activeId === href.slice(1) ? "location" : undefined
+                  }
+                  className={`px-3 py-2 text-sm font-mono hover:text-foreground hover:bg-border rounded transition-colors focus-visible:outline-2 focus-visible:outline focus-visible:outline-accent ${
+                    activeId === href.slice(1)
+                      ? "text-foreground"
+                      : "text-muted-fg"
+                  }`}
                 >
                   {label}
                 </a>
