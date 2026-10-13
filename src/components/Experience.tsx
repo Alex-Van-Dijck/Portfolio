@@ -31,13 +31,14 @@ const JOBS: Job[] = [
     startDate: new Date(2023, 9),
     endDate: new Date(2026, 5),
     description:
-      "[BloomUp is an Antwerp-based startup offering online mental health support. I worked full-stack in a two-person engineering team reporting directly to the founder, owning everything from frontend development to GraphQL API design, infrastructure, and security remediation. My most notable project was integrating an acquired e-learning platform: merging its React frontend and auth into our stack, and migrating its MySQL data and infrastructure onto our AWS/PostgreSQL setup.]",
+      "[BloomUp is an Antwerp-based startup offering online mental health support. As one of two engineers, I contributed across the React frontend, GraphQL API, Database and security.]",
     bullets: [
       "[Migrated from a React Context-driven architecture to a server-side state approach powered by a GraphQL API]",
       "[Built a new end-to-end matching flow connecting users to psychologists and coaches, from UX design through to implementation.]",
       "[Integrated a customer engagement platform (customer.io)]",
       "[Reworked the video conferencing implementation]",
       "[Co-designed UX and fully implemented a new homescreen for the React Native mobile application.]",
+      "[Monitored the GraphQL API in Apollo Studio, tracking resolver error rates and latency, and investigated and fixed the root causes of recurring errors.]",
     ],
     websiteUrl: "https://www.bloomup.org",
   },
