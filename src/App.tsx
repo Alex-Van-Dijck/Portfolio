@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import "./App.css";
 import Hero from "./components/Hero";
@@ -9,9 +9,13 @@ import Certificates from "./components/Certificates";
 import Contact from "./components/Contact";
 
 function App() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">(() =>
+    window.matchMedia("(prefers-color-scheme: light)").matches
+      ? "light"
+      : "dark",
+  );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.classList.toggle("light", theme === "light");
   }, [theme]);
 

@@ -1,5 +1,5 @@
 import { Sun, Moon, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const LINKS = [
   { href: "#about", label: "About" },
@@ -15,13 +15,40 @@ interface Props {
 
 const Nav = ({ theme, onToggleTheme }: Props) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pillRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setMobileMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      if (!pillRef.current?.contains(e.target as Node)) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [mobileMenuOpen]);
 
   return (
     <nav
       className="fixed top-5 inset-x-0 z-50 flex justify-center pointer-events-none"
       aria-label="Main navigation"
     >
-      <div className="pointer-events-auto flex items-center gap-0.5 px-2 py-1.5 rounded-full bg-surface/90 border border-border backdrop-blur-md shadow-sm md:rounded-full">
+      <div
+        ref={pillRef}
+        className="pointer-events-auto flex items-center gap-0.5 px-2 py-1.5 rounded-full bg-surface/90 border border-border backdrop-blur-md shadow-sm md:rounded-full"
+      >
         <span className="font-mono text-xs text-accent font-medium px-3 py-1 select-none">
           AVD
         </span>
@@ -47,6 +74,7 @@ const Nav = ({ theme, onToggleTheme }: Props) => {
         </button>
 
         <button
+          ref={menuButtonRef}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="flex md:hidden ml-1.5 w-7 h-7 items-center justify-center rounded-full text-muted-fg hover:text-foreground hover:bg-border transition-colors focus-visible:outline-2 focus-visible:outline focus-visible:outline-accent"
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}

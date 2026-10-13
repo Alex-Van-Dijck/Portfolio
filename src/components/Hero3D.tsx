@@ -133,12 +133,14 @@ function CodeBrackets({ material }: { material: THREE.Material }) {
   );
 }
 
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
 // Tilts its children toward the cursor, easing back to center when idle.
 function TiltGroup({ children }: { children: React.ReactNode }) {
   const group = useRef<THREE.Group>(null);
 
   useFrame((state, delta) => {
-    if (!group.current) return;
+    if (!group.current || reducedMotion.matches) return;
     const targetY = state.pointer.x * 0.18;
     const targetX = -state.pointer.y * 0.14;
     group.current.rotation.y = THREE.MathUtils.damp(

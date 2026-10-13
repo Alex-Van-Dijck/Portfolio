@@ -31,7 +31,7 @@ const Hero = ({ isDark }: HeroProps) => {
       <div className="relative z-10 h-full flex flex-col justify-end pb-16 md:pb-20 px-8 md:px-16 lg:px-24 pointer-events-none">
         <div className="max-w-[640px] space-y-5 pointer-events-auto">
           <h1
-            className="font-display font-bold leading-[0.92] tracking-tight text-foreground whitespace-nowrap"
+            className="font-display font-bold leading-[0.92] tracking-tight text-foreground md:whitespace-nowrap"
             style={{ fontSize: "clamp(2.8rem, 6vw, 7rem)" }}
           >
             [Alex Van Dijck]
