@@ -22,6 +22,7 @@ const JOBS: Job[] = [
       "[Contributed to the frontend training day of our Software traineeship.]",
       "[Deepened my frontend expertise by learning advanced React and exploring Angular.]",
       "[Broadened my profile by attending the software traineeship, which covered architecture, AI development, cloud computing and Java development.]",
+      "[Learned to work with the Claude API and matured my approach to leveraging AI in development.]",
     ],
     websiteUrl: "https://www.axxes.com/",
   },
