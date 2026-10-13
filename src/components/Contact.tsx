@@ -20,6 +20,13 @@ const Contact = () => {
 
   const handleSubmit = async (e: SubmitEvent) => {
     e.preventDefault();
+    const honeypot = new FormData(e.currentTarget as HTMLFormElement).get(
+      "website",
+    );
+    if (honeypot) {
+      setStatus("success");
+      return;
+    }
     setStatus("loading");
     try {
       await emailjs.send(
@@ -58,9 +65,7 @@ const Contact = () => {
               className="font-display font-bold leading-[1.05] text-foreground"
               style={{ fontSize: "clamp(2.4rem, 3.5vw, 5rem)" }}
             >
-              <div>
-                [Can we build it? <br /> Yes we can! ]
-              </div>
+              [Can we build it? <br /> Yes we can! ]
             </h2>
           </div>
 
@@ -103,13 +108,29 @@ const Contact = () => {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-10" noValidate>
+            <form onSubmit={handleSubmit} className="space-y-10">
+              <div className="absolute -left-[9999px]" aria-hidden>
+                <label htmlFor="contact-website">Website</label>
+                <input
+                  id="contact-website"
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="space-y-2">
-                <label className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase">
+                <label
+                  htmlFor="contact-name"
+                  className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase"
+                >
                   Name
                 </label>
                 <input
+                  id="contact-name"
                   type="text"
+                  autoComplete="name"
                   value={fields.name}
                   onChange={update("name")}
                   placeholder="[Your name]"
@@ -119,11 +140,16 @@ const Contact = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase">
+                <label
+                  htmlFor="contact-email"
+                  className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase"
+                >
                   Email
                 </label>
                 <input
+                  id="contact-email"
                   type="email"
+                  autoComplete="email"
                   value={fields.email}
                   onChange={update("email")}
                   placeholder="[your@email.com]"
@@ -133,10 +159,14 @@ const Contact = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase">
+                <label
+                  htmlFor="contact-message"
+                  className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase"
+                >
                   Message
                 </label>
                 <textarea
+                  id="contact-message"
                   value={fields.message}
                   onChange={update("message")}
                   placeholder="[What are you working on?]"
@@ -147,7 +177,7 @@ const Contact = () => {
               </div>
 
               {status === "error" && (
-                <p className="font-mono text-xs text-red-400">
+                <p role="alert" className="font-mono text-xs text-red-400">
                   Something went wrong. Please try again, or email me directly.
                 </p>
               )}
