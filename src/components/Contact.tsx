@@ -3,7 +3,8 @@ import { useScrollReveal } from "../hooks/useScrollReveal";
 import FormField from "./FormField";
 
 const Contact = () => {
-  const { fields, status, update, handleSubmit } = useContactForm();
+  const { formik, status, handleSubmit } = useContactForm();
+  const { values, errors, touched, handleChange, handleBlur } = formik;
   const { ref, className } = useScrollReveal();
 
   return (
@@ -12,7 +13,6 @@ const Contact = () => {
       className="py-32 md:py-44 px-8 md:px-16 lg:px-24 border-t border-border"
     >
       <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-20 lg:gap-28">
-        {/* ── Left: heading + links ── */}
         <div className="space-y-10">
           <div>
             <span className="font-mono text-xs text-muted-fg tracking-widest uppercase block mb-5">
@@ -65,7 +65,7 @@ const Contact = () => {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-10">
+            <form onSubmit={handleSubmit} noValidate className="space-y-10">
               <div className="absolute -left-[9999px]" aria-hidden>
                 <label htmlFor="contact-website">Website</label>
                 <input
@@ -79,29 +79,38 @@ const Contact = () => {
 
               <FormField
                 id="contact-name"
+                name="name"
                 label="Name"
                 autoComplete="name"
-                value={fields.name}
-                onChange={update("name")}
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.name ? errors.name : undefined}
                 placeholder="[Your name]"
               />
 
               <FormField
                 id="contact-email"
+                name="email"
                 label="Email"
                 type="email"
                 autoComplete="email"
-                value={fields.email}
-                onChange={update("email")}
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.email ? errors.email : undefined}
                 placeholder="[your@email.com]"
               />
 
               <FormField
                 id="contact-message"
+                name="message"
                 label="Message"
                 multiline
-                value={fields.message}
-                onChange={update("message")}
+                value={values.message}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={touched.message ? errors.message : undefined}
                 placeholder="[What do you want to talk to me about?]"
               />
 
@@ -123,7 +132,6 @@ const Contact = () => {
         </div>
       </div>
 
-      {/* Footer line */}
       <div className="max-w-[1200px] mx-auto mt-24 pt-8 border-t border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <span className="font-mono text-xs text-muted-fg">
           [Alex Van Dijck] · Full-stack engineer
