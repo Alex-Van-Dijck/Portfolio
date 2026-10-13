@@ -1,53 +1,10 @@
-import { useState, type SubmitEvent } from "react";
-import emailjs from "@emailjs/browser";
+import { useContactForm } from "../hooks/useContactForm";
 import { useScrollReveal } from "../hooks/useScrollReveal";
-
-type Status = "idle" | "loading" | "success" | "error";
-
-const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+import FormField from "./FormField";
 
 const Contact = () => {
-  const [fields, setFields] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<Status>("idle");
+  const { fields, status, update, handleSubmit } = useContactForm();
   const { ref, className } = useScrollReveal();
-
-  const update =
-    (k: keyof typeof fields) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setFields((f) => ({ ...f, [k]: e.target.value }));
-
-  const handleSubmit = async (e: SubmitEvent) => {
-    e.preventDefault();
-    const honeypot = new FormData(e.currentTarget as HTMLFormElement).get(
-      "website",
-    );
-    if (honeypot) {
-      setStatus("success");
-      return;
-    }
-    setStatus("loading");
-    try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          from_name: fields.name,
-          reply_to: fields.email,
-          message: fields.message,
-        },
-        { publicKey: EMAILJS_PUBLIC_KEY },
-      );
-      setStatus("success");
-    } catch (err) {
-      console.error("EmailJS send failed:", err);
-      setStatus("error");
-    }
-  };
-
-  const inputBase =
-    "w-full bg-transparent border-b border-border focus:border-accent outline-none pb-3 pt-1 font-sans text-sm text-foreground placeholder:text-muted-fg/40 transition-colors duration-200 resize-none";
 
   return (
     <section
@@ -120,61 +77,33 @@ const Contact = () => {
                 />
               </div>
 
-              <div className="space-y-2">
-                <label
-                  htmlFor="contact-name"
-                  className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase"
-                >
-                  Name
-                </label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  autoComplete="name"
-                  value={fields.name}
-                  onChange={update("name")}
-                  placeholder="[Your name]"
-                  required
-                  className={inputBase}
-                />
-              </div>
+              <FormField
+                id="contact-name"
+                label="Name"
+                autoComplete="name"
+                value={fields.name}
+                onChange={update("name")}
+                placeholder="[Your name]"
+              />
 
-              <div className="space-y-2">
-                <label
-                  htmlFor="contact-email"
-                  className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase"
-                >
-                  Email
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  autoComplete="email"
-                  value={fields.email}
-                  onChange={update("email")}
-                  placeholder="[your@email.com]"
-                  required
-                  className={inputBase}
-                />
-              </div>
+              <FormField
+                id="contact-email"
+                label="Email"
+                type="email"
+                autoComplete="email"
+                value={fields.email}
+                onChange={update("email")}
+                placeholder="[your@email.com]"
+              />
 
-              <div className="space-y-2">
-                <label
-                  htmlFor="contact-message"
-                  className="font-mono text-[11px] text-muted-fg block tracking-wider uppercase"
-                >
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  value={fields.message}
-                  onChange={update("message")}
-                  placeholder="[What are you working on?]"
-                  required
-                  rows={4}
-                  className={inputBase}
-                />
-              </div>
+              <FormField
+                id="contact-message"
+                label="Message"
+                multiline
+                value={fields.message}
+                onChange={update("message")}
+                placeholder="[What do you want to talk to me about?]"
+              />
 
               {status === "error" && (
                 <p role="alert" className="font-mono text-xs text-red-400">
