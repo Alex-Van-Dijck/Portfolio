@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, PerspectiveCamera } from "@react-three/drei";
@@ -25,23 +25,17 @@ function Bar({
   depth: number;
   material: THREE.Material;
 }) {
-  const { position, quaternion, length } = useMemo(() => {
-    const f = new THREE.Vector3(...from);
-    const dir = new THREE.Vector3(...to).sub(f);
-    const quaternion = new THREE.Quaternion().setFromUnitVectors(
-      new THREE.Vector3(1, 0, 0),
-      dir.clone().normalize(),
-    );
-    return {
-      position: f.addScaledVector(dir, 0.5),
-      quaternion,
-      length: dir.length(),
-    };
-  }, [from, to]);
+  const start = new THREE.Vector3(...from);
+  const dir = new THREE.Vector3(...to).sub(start);
+  const quaternion = new THREE.Quaternion().setFromUnitVectors(
+    new THREE.Vector3(1, 0, 0),
+    dir.clone().normalize(),
+  );
+  const position = start.clone().addScaledVector(dir, 0.5);
 
   return (
     <mesh position={position} quaternion={quaternion} material={material}>
-      <boxGeometry args={[length, thickness, depth]} />
+      <boxGeometry args={[dir.length(), thickness, depth]} />
     </mesh>
   );
 }
@@ -163,6 +157,18 @@ function TiltGroup({ children }: { children: React.ReactNode }) {
 const Hero3D = ({ isDark }: Hero3DProps) => {
   const roomEnvironment = useMemo(() => new RoomEnvironment(), []);
   const { position: cameraPosition, fov, scale } = useResponsiveCamera();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) =>
+      setVisible(entry.isIntersecting),
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   const material = useMemo(
     () =>
@@ -179,53 +185,52 @@ const Hero3D = ({ isDark }: Hero3DProps) => {
   useEffect(() => () => material.dispose(), [material]);
 
   return (
-    <Canvas
-      className="w-full h-full"
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: true }}
-      onCreated={({ gl }) => {
-        gl.toneMapping = THREE.ACESFilmicToneMapping;
-        gl.toneMappingExposure = 1.1;
-      }}
-    >
-      <PerspectiveCamera
-        makeDefault
-        position={cameraPosition}
-        fov={fov}
-        near={0.1}
-        far={100}
-      />
-      <Environment background={false}>
-        <primitive object={roomEnvironment} />
-      </Environment>
-      <hemisphereLight intensity={isDark ? 1.5 : 0.5} groundColor={"white"} />
+    <div ref={containerRef} className="w-full h-full">
+      <Canvas
+        className="w-full h-full"
+        dpr={[1, 2]}
+        frameloop={visible ? "always" : "never"}
+        gl={{ antialias: true, alpha: true }}
+        onCreated={({ gl }) => {
+          gl.toneMappingExposure = 1.1;
+        }}
+      >
+        <PerspectiveCamera
+          makeDefault
+          position={cameraPosition}
+          fov={fov}
+          near={0.1}
+          far={100}
+        />
+        <Environment background={false}>
+          <primitive object={roomEnvironment} />
+        </Environment>
+        <pointLight
+          position={[4, 4, 4]}
+          intensity={4.5}
+          distance={18}
+          color={isDark ? "#5eddb8" : "#00c891"}
+        />
+        <pointLight
+          position={[-4, -2, 3]}
+          intensity={1.0}
+          distance={18}
+          color="#ffffff"
+        />
+        <pointLight
+          position={[0, -3, -3.5]}
+          intensity={2.2}
+          distance={14}
+          color="#4455ff"
+        />
 
-      <ambientLight intensity={0.35} />
-      <pointLight
-        position={[4, 4, 4]}
-        intensity={4.5}
-        distance={18}
-        color={isDark ? "#5eddb8" : "#00c891"}
-      />
-      <pointLight
-        position={[-4, -2, 3]}
-        intensity={1.0}
-        distance={18}
-        color="#ffffff"
-      />
-      <pointLight
-        position={[0, -3, -3.5]}
-        intensity={2.2}
-        distance={14}
-        color="#4455ff"
-      />
-
-      <group position={[0, 0, 0]} scale={scale}>
-        <TiltGroup>
-          <CodeBrackets material={material} />
-        </TiltGroup>
-      </group>
-    </Canvas>
+        <group position={[0, 0, 0]} scale={scale}>
+          <TiltGroup>
+            <CodeBrackets material={material} />
+          </TiltGroup>
+        </group>
+      </Canvas>
+    </div>
   );
 };
 
