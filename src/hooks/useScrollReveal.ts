@@ -8,10 +8,11 @@ export const useScrollReveal = (delayMs = 0) => {
     const el = ref.current;
     if (!el) return;
 
+    let timeout: ReturnType<typeof setTimeout>;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setTimeout(() => setVisible(true), delayMs);
+          timeout = setTimeout(() => setVisible(true), delayMs);
           observer.unobserve(el);
         }
       },
@@ -19,7 +20,10 @@ export const useScrollReveal = (delayMs = 0) => {
     );
 
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+    };
   }, [delayMs]);
 
   return { ref, className: `reveal${visible ? " visible" : ""}` };

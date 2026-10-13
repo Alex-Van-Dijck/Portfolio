@@ -10,7 +10,7 @@ interface HeroProps {
 const Hero = ({ isDark }: HeroProps) => {
   return (
     <section
-      id="Hero"
+      id="hero"
       className="relative overflow-hidden"
       style={{ height: "100svh" }}
     >
