@@ -22,9 +22,9 @@ const CERTS: Certificate[] = [
   },
   {
     id: "apollo",
-    name: "Graph Developer - Associate",
+    name: "Graph Developer - Professional",
     logo: "./certificate-logos/apollo.svg",
-    href: "https://www.apollographql.com/tutorials/certifications/6c9264c1-e082-4a63-98d1-f22b69e16b75",
+    href: "https://www.apollographql.com/tutorials/certifications/1863d0ee-5ff5-494a-98f6-ecb0e3ba063f",
   },
   {
     id: "anthropic",
